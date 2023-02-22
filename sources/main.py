@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/1")
 def hello_world1():
-    return "<p>Hello1</p>"
+    return "<p>Hello</p>"
 
 @app.route("/2")
 def hello_world2():
