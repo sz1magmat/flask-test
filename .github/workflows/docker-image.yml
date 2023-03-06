@@ -10,8 +10,8 @@ jobs:
     steps:
     - name: Check if secret is set
       run: |
-        if [[ -z "${{ secrets.PORT_TEST }}" ]]
-          then; echo "Port secret not set"; exit 1
+        if [[ -z "${{ secrets.PORT_TEST }}" ]]; then
+          echo "Port secret not set"; exit 1
         else echo "PORT=${{ secrets.PORT_TEST }}" >> .env; fi
 
     - name: Checkout code
