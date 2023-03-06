@@ -19,13 +19,12 @@ jobs:
 
     - name: Create env
       run: |
-        secrets=("SECRET_KEY" "DB_PASSWORD" "API_KEY")
+        secrets=("SECRET_1" "SECRET_2" "SECRET_3")
         for secret in "${secrets[@]}"; do
-          if [ -z "${{ secrets.${secret} }}" ]; then
-            echo "${secret} secret not set"
+          if [[ -z "${!secret}" ]]; then
+            echo "ERROR: $secret not set"
             exit 1
           fi
-          echo "${secret}=${{ secrets.${secret} }}" >> .env
         done
 
     - name: Build and push Docker image
