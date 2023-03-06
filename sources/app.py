@@ -26,4 +26,9 @@ with app.app_context():
 if __name__ == '__main__':
     log.debug("Starting Flask app")
     #serve(app, host=get_env("HOST_ADDRESS"), port=get_env("HOST_PORT"))
-    app.run(debug=True, host=get_env("HOST_ADDRESS"), port=get_env("HOST_PORT"))
+    print("Starting app")
+    print(get_env("HOST_PORT"))
+    print(get_env("HOST_ADDRESS"))
+    print(get_env("DATABASE_URl"))
+    print("#" * 100)
+    app.run(debug=True, port=get_env("HOST_PORT"), host=get_env("HOST_ADDRESS"))
