@@ -19,10 +19,11 @@ jobs:
 
     - name: Create env
       run: |
-        secrets=("PORT_TEST")
+        secrets=("SECRET_KEY" "DB_PASSWORD" "API_KEY")
         for secret in "${secrets[@]}"; do
           if [ -z "${{ secrets.${secret} }}" ]; then
-            echo "${secret} secret not set, check your settings"; exit 1
+            echo "${secret} secret not set"
+            exit 1
           fi
           echo "${secret}=${{ secrets.${secret} }}" >> .env
         done
