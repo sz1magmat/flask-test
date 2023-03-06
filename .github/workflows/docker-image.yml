@@ -10,12 +10,16 @@ jobs:
     steps:
     - name: Check if secret is set
       run: |
-        if [[ -z "${{ secrets.PORT_TEST }}" ]]; then
-          echo "Secret not set!"
-          exit 1
-        else
-            echo "Secret set!"
-        fi
+        secrets=("PORT_TEST", "ASD")
+        for secret in "${secrets[@]}"
+        do
+          if [[ -z "${{ secrets.${secret} }}" ]]; then
+            echo "${secret} not set!"
+            exit 1
+          else
+            echo "${secret} set!"
+          fi
+        done
 
     - name: Checkout code
       uses: actions/checkout@v2
