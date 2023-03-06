@@ -1,23 +1,33 @@
-name: Build Docker image
+name: Docker Image Build
 
 on:
-  push
+  push:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check if secret is set
+    - name: Secret check
       run: |
-        if [[ -z "${{ secrets.PORT_TEST }}" ]]; then
-          echo "Port secret not set"; exit 1
-        else echo "PORT=${{ secrets.PORT_TEST }}" >> .env; fi
+        if [[ -z "${{ secrets.HOST_PORT }}" ]]; then
+          echo "Host port secret not set or invalid"; exit 1
+        else echo "HOST_PORT=${{ secrets.HOST_PORT }}" >> .env; fi
 
-    - name: Checkout code
+        if [[ -z "${{ secrets.HOST_ADDRESS }}" ]]; then
+          echo "Host address secret not set or invalid"; exit 1
+        else echo "HOST_ADDRESS=${{ secrets.HOST_ADDRESS }}" >> .env; fi
+
+        if [[ -z "${{ secrets.DATABASE_URL }}" ]]; then
+          echo "Database URL not set or invalid"; exit 1
+        else echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env; fi
+
+
+    - name: Code Checkout
       uses: actions/checkout@v2
 
-    - name: Login to Docker Hub
+    - name: Docker Hub Login
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -28,4 +38,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: justsnaf/flask-test:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/flask-rest-temp:latest
