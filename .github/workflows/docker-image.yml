@@ -12,7 +12,7 @@ jobs:
       run: |
         secrets=("PORT_TEST")
         for secret in "${secrets[@]}"; do
-          if [[ -z "${secrets.$secret}" ]]; then
+          if [[ -z "${secrets[$secret]}" ]]; then
             echo "ERROR: $secret not set"
             exit 1
           fi
