@@ -14,4 +14,4 @@ def hello_world2():
     return "<p>Hello2</p>"
 
 if __name__ == "__main__":
-    app.run(debug=True, port="100", host="0.0.0.0")
+    app.run(debug=True, port=getenv("PORT_TEST"), host="0.0.0.0")
