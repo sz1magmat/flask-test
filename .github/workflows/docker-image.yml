@@ -19,7 +19,13 @@ jobs:
 
     - name: Create env
       run: |
-        echo "PORT_TEST=${{ secrets.PORT_TEST }}" > .env
+        secrets=("PORT_TEST")
+        for secret in "${secrets[@]}"; do
+          if [ -z "${{ secrets.${secret} }}" ]; then
+            echo "${secret} secret not set, check your settings"; exit 1
+          fi
+          echo "${secret}=${{ secrets.${secret} }}" >> .env
+        done
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
