@@ -13,11 +13,11 @@ jobs:
         secrets=("PORT_TEST", "ASD")
         for secret in "${secrets[@]}"
         do
-          if [ -z "${{ secrets.${secret} }}" ]; then
-            echo "$secret not set!"
+          if [[ -z "${{ secrets.${secret} }}" ]]; then
+            echo "${secret} not set!"
             exit 1
           else
-            echo "$secret set!"
+            echo "${secret} set!"
           fi
         done
 
