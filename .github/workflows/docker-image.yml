@@ -12,16 +12,25 @@ jobs:
     - name: Secret check
       run: |
         if [[ -z "${{ secrets.HOST_PORT }}" ]]; then
-          echo "Host port secret not set or invalid"; exit 1
-        else echo "HOST_PORT=${{ secrets.HOST_PORT }}" >> .env; fi
+          echo "Host port secret not set or invalid"
+          exit 1
+        else
+          echo "HOST_PORT=${{ secrets.HOST_PORT }}" >> .env
+        fi
 
         if [[ -z "${{ secrets.HOST_ADDRESS }}" ]]; then
-          echo "Host address secret not set or invalid"; exit 1
-        else echo "HOST_ADDRESS=${{ secrets.HOST_ADDRESS }}" >> .env; fi
+          echo "Host address secret not set or invalid"
+          exit 1
+        else
+          echo "HOST_ADDRESS=${{ secrets.HOST_ADDRESS }}" >> .env
+        fi
 
         if [[ -z "${{ secrets.DATABASE_URL }}" ]]; then
-          echo "Database URL not set or invalid"; exit 1
-        else echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env; fi
+          echo "Database URL not set or invalid"
+          exit 1
+        else
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+        fi
 
 
     - name: Code Checkout
