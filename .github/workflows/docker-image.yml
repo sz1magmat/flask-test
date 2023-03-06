@@ -8,16 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Test secrets and creat .env
+    - name: Check if secret is set
       run: |
-        secrets=("PORT_TEST")
-        for secret in "${secrets[@]}"; do
-          if [[ -z "${secrets[$secret]}" ]]; then
-            echo "ERROR: $secret not set"
-            exit 1
-          fi
-          echo "$secret=${secrets[$secret]}" >> .env
-        done
+        if [[ -z "${{ secrets.PORT_TEST }}" ]]; then
+          echo "Secret not set!"
+          exit 1
+        else
+            echo "Secret set!"
+        fi
 
     - name: Checkout code
       uses: actions/checkout@v2
