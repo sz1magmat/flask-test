@@ -1,11 +1,13 @@
 """Main application file"""
 
+load_dotenv()
 from create import log
 try:
     from models import db
     from env import get_env
     from waitress import serve
     from create import api, app
+    from dotenv import load_dotenv
     from sqlalchemy_utils import database_exists, create_database
 except ImportError as e: log.error("Import error - %s", e); raise
 
@@ -23,6 +25,7 @@ with app.app_context():
     except Exception as e:
         log.error("Database error - %s", e); raise
 
+load_dotenv()
 if __name__ == '__main__':
     log.debug("Starting Flask app")
     #serve(app, host=get_env("HOST_ADDRESS"), port=get_env("HOST_PORT"))
