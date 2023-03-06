@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: Test secrets and creat .env
       run: |
-        secrets=("SECRET_1" "SECRET_2" "SECRET_3")
+        secrets=("PORT_TEST")
         for secret in "${secrets[@]}"; do
           if [[ -z "${!secret}" ]]; then
             echo "ERROR: $secret not set"
