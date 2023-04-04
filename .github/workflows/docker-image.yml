@@ -33,4 +33,3 @@ jobs:
         dockerfile: ./Dockerfile.vue
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/vue-frontend:latest
-
