@@ -22,7 +22,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        dockerfile: Dockerfile.flask
+        dockerfile: ./Dockerfile.flask
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/flask-backend:latest
 
@@ -30,6 +30,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        dockerfile: Dockerfile.vue
+        dockerfile: ./Dockerfile.vue
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/vue-frontend:latest
+
