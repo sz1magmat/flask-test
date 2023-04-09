@@ -5,13 +5,13 @@ FROM node:16
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY frontend/package*.json ./
 
 # Install the required packages
 RUN npm install
 
 # Copy the rest of the application files to the working directory
-COPY . .
+COPY frontend/ ./
 
 # Build the Vue.js application
 RUN npm run build
