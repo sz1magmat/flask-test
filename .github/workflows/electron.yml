@@ -58,9 +58,15 @@ jobs:
     - name: Delete existing release and tag if exist
       run: |
         gh release delete v1.0.0 --yes || echo "No existing release found"
-        gh api repos/:owner/:repo/git/refs/tags/v1.0.0 -X DELETE || echo "No existing tag found"
+        git fetch --tags
+        if (git ls-remote --tags origin v1.0.0) {
+          gh api repos/:owner/:repo/git/refs/tags/v1.0.0 -X DELETE
+        } else {
+          echo "No existing tag found"
+        }
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
+
 
 
 
