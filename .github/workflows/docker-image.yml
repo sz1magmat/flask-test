@@ -78,13 +78,24 @@ jobs:
 
     - name: Build Electron App
       run: npm run build --prefix desktop
-    
+
+    - name: Set Custom Tag
+      id: custom_tag
+      run: |
+        echo "TAG_NAME=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+        echo "TAG_MESSAGE=Automated release created on $(date)" >> $GITHUB_ENV
+
     - name: Delete Existing Tag
       run: |
-        git tag -d ${{ github.ref }}
-        git push origin --delete ${{ github.ref }}
+        git tag -d $TAG_NAME || true
+        git push origin --delete $TAG_NAME || true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create New Tag
+      run: |
+        git tag -a $TAG_NAME -m "$TAG_MESSAGE"
+        git push origin $TAG_NAME
 
     - name: Create Release
       id: create_release
@@ -92,8 +103,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ env.TAG_NAME }}
+        release_name: Release ${{ env.TAG_NAME }}
         draft: false
         prerelease: false
 
@@ -106,4 +117,3 @@ jobs:
         asset_path: ./desktop/dist/AUMS-Desktop.exe
         asset_name: AUMS-Desktop.exe
         asset_content_type: application/x-msdownload
-
