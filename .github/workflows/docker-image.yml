@@ -68,6 +68,11 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/vue-frontend:latest
         
+    - name: Install Node.js and npm
+      uses: actions/setup-node@v2
+      with:
+        node-version: '15.x'
+
     - name: Build Electron.js app
       run: npm run build
       working-directory: ./desktop
@@ -79,7 +84,6 @@ jobs:
       working-directory: ./desktop
       env:
         PATH: ${{ env.PATH }}:./node_modules/.bin
-
       
     - name: Create release
       uses: actions/create-release@v1
