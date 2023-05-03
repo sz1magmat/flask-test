@@ -44,7 +44,21 @@ jobs:
 
     - name: List contents of dist directory
       run: Get-ChildItem -Path desktop/dist
-      
+
+    - name: Install and authenticate with GitHub CLI
+      run: |
+        choco install gh
+        echo ${{ secrets.PAT }} | gh auth login --with-token
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+
+    - name: Delete existing release and tag if exist
+      run: |
+        gh release delete v1.0.0 --yes || echo "No existing release found"
+        git push --delete origin v1.0.0 || echo "No existing tag found"
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
