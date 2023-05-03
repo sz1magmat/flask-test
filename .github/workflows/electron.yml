@@ -45,6 +45,15 @@ jobs:
     - name: List contents of dist directory
       run: Get-ChildItem -Path desktop/dist
       
+    - name: Delete Release and Tag if they exist
+      id: delete_release_tag
+      uses: andstor/delete-release-tag-action@v1
+      with:
+        token: ${{ secrets.PAT }}
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.event.repository.name }}
+        tag: v1.0.0
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -66,5 +75,3 @@ jobs:
         asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
         asset_name: Your App Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
-
-
