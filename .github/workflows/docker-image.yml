@@ -70,10 +70,12 @@ jobs:
 
     - name: Build Electron.js app
       run: npm run build
+      working-directory: ./desktop
 
     - name: Package Electron.js app
       run: npm run build:win
-
+      working-directory: ./desktop
+      
     - name: Create release
       uses: actions/create-release@v1
       with:
