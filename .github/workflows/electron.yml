@@ -17,7 +17,7 @@ jobs:
         run: npm install
         working-directory: ./desktop
       - name: Build Electron app
-        uses: electron-userland/electron-builder-action@v2
+        uses: electron-userland/electron-builder-action@v2.1.0
         with:
           platform: linux
           arch: x64
