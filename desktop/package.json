@@ -1,37 +1,30 @@
 {
-  "name": "aums_desktop",
+  "name": "your-app-name",
   "version": "1.0.0",
-  "description": "AUMS Desktop Client",
+  "description": "Your app description",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder --windows"
   },
-  "build": {
-    "appId": "hu.aums.desktop",
-    "productName": "AUMS",
-    "directories": {
-      "output": "build"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
-    }
-  },
-  "nsis": {
-    "artifactName": "AUMS-Desktop.exe"
-  },
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
+    "electron": "^24.1.3"
   },
   "devDependencies": {
-    "electron": "^15.3.2",
-    "electron-builder": "^22.13.1"
+    "electron-builder": "^24.3.0"
+  },
+  "build": {
+    "appId": "com.yourdomain.yourappname",
+    "productName": "Your App Name",
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": true
+    }
   }
 }
