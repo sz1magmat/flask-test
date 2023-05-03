@@ -67,14 +67,19 @@ jobs:
         file: ./Dockerfile.vue
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/vue-frontend:latest
-
+        
     - name: Build Electron.js app
       run: npm run build
       working-directory: ./desktop
+      env:
+        PATH: ${{ env.PATH }}:./node_modules/.bin
 
     - name: Package Electron.js app
       run: npm run build:win
       working-directory: ./desktop
+      env:
+        PATH: ${{ env.PATH }}:./node_modules/.bin
+
       
     - name: Create release
       uses: actions/create-release@v1
