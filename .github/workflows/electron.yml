@@ -69,18 +69,16 @@ jobs:
     - name: Create Release
       id: create_release
       run: |
-        gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives."
+        echo "RELEASE_OUTPUT=$(gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives.")" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
-
-
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ env.RELEASE_OUTPUT }}
         asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
         asset_name: Your App Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
