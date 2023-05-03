@@ -63,8 +63,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./desktop/dist/Your App Name Setup 1.0.0.exe
-        asset_name: Your App Name Setup 1.0.0.exe
+        asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
+        asset_name: Your App Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
 
 
