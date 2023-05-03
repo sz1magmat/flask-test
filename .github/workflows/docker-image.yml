@@ -1,4 +1,4 @@
-name: Docker Image Build
+name: Docker Image Build and Release
 
 on:
   push:
@@ -52,7 +52,7 @@ jobs:
         echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
         echo "PRODUCTION_DATABASE_URI=${{ secrets.PRODUCTION_DATABASE_URI }}" >> .env
 
-    - name: Build And Push Flask Backend Docker Image
+    - name: Build Flask Backend Docker Image
       uses: docker/build-push-action@v2
       with:
         context: .
@@ -60,7 +60,7 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/flask-backend:latest
 
-    - name: Build And Push Vue Frontend Docker Image
+    - name: Build Vue Frontend Docker Image
       uses: docker/build-push-action@v2
       with:
         context: .
@@ -68,55 +68,29 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/vue-frontend:latest
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14
+    - name: Build Electron.js app
+      run: npm run build
 
-    - name: Install Dependencies
-      run: npm install --prefix desktop
+    - name: Package Electron.js app
+      run: npm run build:win
 
-    - name: Build Electron App
-      run: npm run build --prefix desktop
-
-    - name: Set Custom Tag
-      id: custom_tag
-      run: |
-        echo "TAG_NAME=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
-        echo "TAG_MESSAGE=Automated release created on $(date)" >> $GITHUB_ENV
-
-    - name: Delete Existing Tag
-      run: |
-        git tag -d $TAG_NAME || true
-        git push origin --delete $TAG_NAME || true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create New Tag
-      run: |
-        git config --local user.email "sz1magmat@vasvari.org"
-        git config --local user.name "sz1magmat"
-        git tag -a $TAG_NAME -m "$TAG_MESSAGE"
-        git push origin $TAG_NAME
-
-
-    - name: Create Release
-      id: create_release
+    - name: Create release
       uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
-        tag_name: ${{ env.TAG_NAME }}
-        release_name: Release ${{ env.TAG_NAME }}
+        tag_name: v${{ github.ref }}
+        release_name: Release v${{ github.ref }}
+        body: |
+          This is a new release.
         draft: false
         prerelease: false
 
-    - name: Upload Electron App As Release Asset
+    - name: Upload release asset
       uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./desktop/dist/AUMS-Desktop.exe
+        asset_path: ./dist/AUMS-Desktop Setup.exe
         asset_name: AUMS-Desktop.exe
-        asset_content_type: application/x-msdownload
+        asset_content_type: application/octet-stream
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
