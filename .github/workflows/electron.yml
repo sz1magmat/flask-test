@@ -29,7 +29,7 @@ jobs:
       working-directory: desktop
       
     - name: List contents of working directory
-      run: ls -la
+      run: Get-ChildItem -Name
       working-directory: desktop
 
     - name: Display electron-packager command output
