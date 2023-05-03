@@ -50,7 +50,7 @@ jobs:
         Invoke-WebRequest -Uri "https://github.com/cli/cli/releases/download/v2.28.0/gh_2.28.0_windows_amd64.zip" -OutFile "gh.zip"
         Expand-Archive -Path "gh.zip" -DestinationPath "gh"
         $Env:Path += ";$(Get-Location)\gh\bin"
-        echo ${{ secrets.PAT }} | gh auth login --with-token
+        echo ${{ secrets.PAT }} | gh auth login --with-token -v
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
 
