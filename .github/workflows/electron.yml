@@ -42,6 +42,9 @@ jobs:
         name: electron-app
         path: desktop/dist/*.exe # Update the artifact path
 
+    - name: List contents of dist directory
+      run: Get-ChildItem -Path dist
+      
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -53,7 +56,6 @@ jobs:
         body: Description of the release
         draft: false
         prerelease: false
-
 
     - name: Upload Release Asset
       id: upload-release-asset
