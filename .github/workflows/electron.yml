@@ -49,14 +49,19 @@ jobs:
         $Env:Path += ";$(Get-Location)\gh\bin"
         echo ${{ secrets.PAT }} | gh auth login --with-token
 
+    - name: List releases and tags
+      run: |
+        gh release list
+        git fetch --tags
+        git tag -l
+
     - name: Delete existing release and tag if exist
       run: |
         gh release delete v1.0.0 --yes || echo "No existing release found"
-        git config --global user.email "your_email@example.com"
-        git config --global user.name "Your Name"
-        git push --delete origin v1.0.0 || echo "No existing tag found"
+        gh api repos/:owner/:repo/git/refs/tags/v1.0.0 -X DELETE || echo "No existing tag found"
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
+
 
 
 
