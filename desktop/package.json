@@ -21,8 +21,7 @@
         {
           "target": "nsis",
           "arch": [
-            "x64",
-            "ia32"
+            "x64"
           ]
         }
       ]
@@ -31,13 +30,7 @@
       "oneClick": true,
       "perMachine": false,
       "allowElevation": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "installerHeader": "assets/installerHeader.bmp",
-      "installerHeaderIcon": "assets/icon.ico",
-      "deleteAppDataOnUninstall": true,
-      "artifactName": "${productName} Setup ${version}.${ext}"
+      "artifactName": "${productName}-Setup-${version}.${ext}"
     }
   }
-
 }
