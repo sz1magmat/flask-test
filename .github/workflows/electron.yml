@@ -66,18 +66,13 @@ jobs:
 
 
 
-
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      run: |
+        gh release create v1.0.0 --no-archive --title "Release v1.0.0" --notes "Description of the release"
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
-      with:
-        tag_name: v1.0.0
-        release_name: Release v1.0.0
-        body: Description of the release
-        draft: false
-        prerelease: false
+
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
@@ -88,18 +83,5 @@ jobs:
         asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
         asset_name: Your App Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
-        
-    - name: Delete unwanted assets
-      run: |
-        $release = gh api repos/:owner/:repo/releases/tags/v1.0.0 | ConvertFrom-Json
-        $assets = gh api repos/:owner/:repo/releases/$($release.id)/assets | ConvertFrom-Json
-        $filteredAssets = $assets | Where-Object { $_.name.EndsWith(".zip") -or $_.name.EndsWith(".tar.gz") }
-
-        foreach ($asset in $filteredAssets) {
-          Write-Host "Deleting asset ID:" $asset.id
-          gh api repos/:owner/:repo/releases/assets/$($asset.id) -X DELETE
-        }
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT }}
 
 
