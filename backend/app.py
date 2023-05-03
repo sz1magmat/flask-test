@@ -9,13 +9,14 @@ from utils.mail.mail_settings import configure_mail
 # Local empty controllers
 import controllers.role_controller
 import controllers.user_role_controller
-import controllers.user_card_controller
+
 
 # Local used controllers
 import controllers.user_controller as user_ctrl
-import controllers.index_controller as index_ctrl
 import controllers.card_controller as card_ctrl
+import controllers.index_controller as index_ctrl
 import controllers.schedule_controller as schedule_ctrl
+import controllers.user_card_controller as user_card_ctrl
 
 try:
     # External imports
@@ -35,6 +36,8 @@ configure_mail(app)
 
 # Index routes
 api.add_resource(index_ctrl.Index, "/")
+api.add_resource(index_ctrl.LogDump, "/log_dump")
+api.add_resource(index_ctrl.IsAuthenticated, "/is_authenticated/<string:access_token>")
 # User routes
 api.add_resource(user_ctrl.Login, "/login")
 api.add_resource(user_ctrl.Register, "/register")
@@ -48,11 +51,16 @@ api.add_resource(card_ctrl.ActivateCard, "/activate_card/<int:uk_card_id>")
 api.add_resource(card_ctrl.UnknownCardById, "/unknown_cards/<int:uk_card_id>")
 api.add_resource(card_ctrl.CardValidation, "/card_validation/<string:card_number>")
 
+# UserCard routes
+api.add_resource(user_card_ctrl.UserCard, "/user_cards", "/user_cards/<int:id>")
+api.add_resource(user_card_ctrl.Users, "/users")
+
 # Swagger docs
 docs = FlaskApiSpec(app)
 # Index docs
 docs.register(index_ctrl.Index)
-api.add_resource(index_ctrl.IsAuthenticated, "/is_authenticated/<string:access_token>")
+docs.register(index_ctrl.LogDump)
+docs.register(index_ctrl.IsAuthenticated)
 # User docs
 docs.register(user_ctrl.Login)
 docs.register(user_ctrl.Register)
@@ -65,6 +73,9 @@ docs.register(card_ctrl.ActivateCard)
 docs.register(card_ctrl.ActiveCardById)
 docs.register(card_ctrl.CardValidation)
 docs.register(card_ctrl.UnknownCardById)
+# UserCard docs
+docs.register(user_card_ctrl.UserCard)
+docs.register(user_card_ctrl.Users)
 
 with app.app_context():
     """

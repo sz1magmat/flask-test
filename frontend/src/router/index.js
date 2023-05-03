@@ -50,7 +50,6 @@ router.beforeEach(async (to, from, next) =>
       if (response.data.status == 'success') next();
       else
       {
-        alert(response.data.message);
         location.reload();
         localStorage.removeItem('access_token');
         next('/');
@@ -58,7 +57,6 @@ router.beforeEach(async (to, from, next) =>
     })
     .catch((error) =>
     {
-      alert(error);
       location.reload();
       localStorage.removeItem('access_token');
       next('/');
