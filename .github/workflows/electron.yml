@@ -1,0 +1,28 @@
+name: Build Electron app on main push
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'desktop/main.js'
+      - 'desktop/package.json'
+      - 'desktop/package-lock.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./desktop
+      - name: Build Electron app
+        uses: electron-userland/electron-builder-action@v2
+        with:
+          platform: linux
+          arch: x64
