@@ -1,23 +1,33 @@
-name: Build Electron app on main push
+name: Build Electron App
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main # Replace with the name of your default branch if different
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./desktop
-      - name: Build Electron app
-        uses: electron-userland/electron-builder-action@v2.1.0
-        with:
-          platform: linux
-          arch: x64
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16 # You can use other Node.js versions as well
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build and package Electron app
+      run: |
+        npm install electron-packager -g
+        electron-packager . --platform=win32 --arch=x64 --asar --out=dist --overwrite
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: electron-app
+        path: dist/*.exe
