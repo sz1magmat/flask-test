@@ -65,11 +65,17 @@ jobs:
 
 
 
-
     - name: Create Release
       id: create_release
       run: |
-        echo "RELEASE_OUTPUT=$(gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives.")" >> $GITHUB_ENV
+        gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives."
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+
+    - name: Fetch Release
+      id: fetch_release
+      run: |
+        echo "UPLOAD_URL=$(gh api repos/:owner/:repo/releases/tags/v1.0.0 --jq '.upload_url')" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
 
@@ -78,7 +84,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
-        upload_url: ${{ env.RELEASE_OUTPUT }}
+        upload_url: ${{ env.UPLOAD_URL }}
         asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
         asset_name: Your App Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
