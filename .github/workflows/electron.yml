@@ -69,9 +69,10 @@ jobs:
     - name: Create Release
       id: create_release
       run: |
-        gh release create v1.0.0 --no-archive --title "Release v1.0.0" --notes "Description of the release"
+        gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives."
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
+
 
 
     - name: Upload Release Asset
