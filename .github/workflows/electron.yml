@@ -65,6 +65,11 @@ jobs:
 
 
 
+    - name: Push Tag
+      run: |
+        git tag v1.0.0 || echo "Tag already exists"
+        git push origin v1.0.0 || echo "Tag already pushed"
+
     - name: Create Release
       id: create_release
       run: |
