@@ -44,6 +44,19 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
 
+    - name: Fetch Release ID
+      run: |
+        echo "RELEASE_ID=$(gh api repos/:owner/:repo/releases/tags/v1.0.0 --jq '.id')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+
+    - name: Update Release (remove source code assets)
+      run: |
+        gh api repos/:owner/:repo/releases/:release_id --method PATCH --field tarball_url= --field zipball_url=
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+        RELEASE_ID: ${{ env.RELEASE_ID }}
+
     - name: Fetch Release
       run: |
         echo "UPLOAD_URL=$(gh api repos/:owner/:repo/releases/tags/v1.0.0 --jq '.upload_url')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
