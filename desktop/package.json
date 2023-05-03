@@ -17,12 +17,27 @@
     "appId": "com.yourdomain.yourappname",
     "productName": "Your App Name",
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     },
     "nsis": {
       "oneClick": true,
       "perMachine": false,
-      "allowElevation": true
+      "allowElevation": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeader": "assets/installerHeader.bmp",
+      "installerHeaderIcon": "assets/icon.ico",
+      "deleteAppDataOnUninstall": true,
+      "artifactName": "${productName} Setup ${version}.${ext}"
     }
   }
+
 }
