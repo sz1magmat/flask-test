@@ -73,6 +73,9 @@ jobs:
       with:
         node-version: '15.x'
 
+    - name: Install Electron Builder
+      run: npm install electron-builder
+
     - name: Build Electron.js app
       run: npm run build
       working-directory: ./desktop
