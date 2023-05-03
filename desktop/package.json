@@ -25,6 +25,9 @@
       ]
     }
   },
+  "nsis": {
+    "artifactName": "AUMS-Desktop.exe"
+  },
   "dependencies": {
   },
   "devDependencies": {
