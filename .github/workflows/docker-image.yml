@@ -78,6 +78,13 @@ jobs:
 
     - name: Build Electron App
       run: npm run build --prefix desktop
+    
+    - name: Delete Existing Tag
+      run: |
+        git tag -d ${{ github.ref }}
+        git push origin --delete ${{ github.ref }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create Release
       id: create_release
