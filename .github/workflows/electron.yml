@@ -3,7 +3,7 @@ name: Build Electron App
 on:
   push:
     branches:
-      - main # Replace with the name of your default branch if different
+      - main
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: 16 # You can use other Node.js versions as well
+        node-version: 16
 
     - name: Install dependencies
       run: npm ci
@@ -30,48 +30,12 @@ jobs:
     - name: Build and package Electron app
       run: npm run build
       working-directory: desktop
-      
-    - name: List contents of working directory
-      run: Get-ChildItem -Name
-      working-directory: desktop
 
     - name: Display electron-packager command output
       run: |
         npm install electron-packager -g
         electron-packager . --platform=win32 --arch=x64 --asar --out=dist --overwrite --debug
       working-directory: desktop
-      
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: electron-app
-        path: desktop/dist/*.exe # Update the artifact path
-
-    - name: Install and authenticate with GitHub CLI
-      run: |
-        Invoke-WebRequest -Uri "https://github.com/cli/cli/releases/download/v2.28.0/gh_2.28.0_windows_amd64.zip" -OutFile "gh.zip"
-        Expand-Archive -Path "gh.zip" -DestinationPath "gh"
-        $Env:Path += ";$(Get-Location)\gh\bin"
-        echo ${{ secrets.PAT }} | gh auth login --with-token
-
-    - name: List releases and tags
-      run: |
-        gh release list
-        git fetch --tags
-        git tag -l
-
-    - name: Delete existing release and tag if exist
-      run: |
-        gh release delete v1.0.0 --yes || echo "No existing release found"
-        git fetch --tags
-        if (git ls-remote --tags origin v1.0.0) {
-          gh api repos/:owner/:repo/git/refs/tags/v1.0.0 -X DELETE
-        } else {
-          echo "No existing tag found"
-        }
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT }}
-
 
     - name: Create Release
       id: create_release
@@ -79,7 +43,7 @@ jobs:
         gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives."
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
-      
+
     - name: Fetch Release
       id: fetch_release
       run: |
@@ -96,4 +60,3 @@ jobs:
         asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
         asset_name: Your App Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
-
