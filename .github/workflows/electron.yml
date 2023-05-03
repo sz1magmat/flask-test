@@ -45,21 +45,6 @@ jobs:
     - name: List contents of dist directory
       run: Get-ChildItem -Path desktop/dist
       
-    - name: Delete existing tag
-      uses: andstor/delete-release-tag-action@v1.1.0
-      if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-      with:
-        tag: ${{ github.ref }}
-        token: ${{ secrets.PAT }}
-
-    - name: Delete existing release
-      uses: marvinpinto/action-automatic-releases@latest
-      if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-      with:
-        repo-token: ${{ secrets.PAT }}
-        delete: true
-        tag: ${{ github.ref }}
-      
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
