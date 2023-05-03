@@ -26,8 +26,18 @@ jobs:
       run: |
         npm install electron-packager -g
         electron-packager . --platform=win32 --arch=x64 --asar --out=dist --overwrite
-      working-directory: desktop # Update the working directory
+      working-directory: desktop
+      
+    - name: List contents of working directory
+      run: ls -la
+      working-directory: desktop
 
+    - name: Display electron-packager command output
+      run: |
+        npm install electron-packager -g
+        electron-packager . --platform=win32 --arch=x64 --asar --out=dist --overwrite --debug
+      working-directory: desktop
+      
     - name: Upload build artifact
       uses: actions/upload-artifact@v2
       with:
