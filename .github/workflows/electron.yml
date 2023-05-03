@@ -86,3 +86,15 @@ jobs:
         asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
         asset_name: Your App Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
+        
+    - name: Delete unwanted assets
+      run: |
+        release_id=$(gh api repos/:owner/:repo/releases/tags/v1.0.0 --jq '.id')
+        asset_ids=$(gh api repos/:owner/:repo/releases/$release_id/assets --jq '[.[] | select(.name | endswith(".zip") or endswith(".tar.gz"))] | map(.id)')
+        for asset_id in ${asset_ids[@]}; do
+          echo "Deleting asset ID: $asset_id"
+          gh api repos/:owner/:repo/releases/assets/$asset_id -X DELETE
+        done
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+
