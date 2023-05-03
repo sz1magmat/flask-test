@@ -20,14 +20,16 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
+      working-directory: desktop # Update the working directory
 
     - name: Build and package Electron app
       run: |
         npm install electron-packager -g
         electron-packager . --platform=win32 --arch=x64 --asar --out=dist --overwrite
+      working-directory: desktop # Update the working directory
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v2
       with:
         name: electron-app
-        path: dist/*.exe
+        path: desktop/dist/*.exe # Update the artifact path
