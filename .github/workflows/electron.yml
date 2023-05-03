@@ -40,7 +40,7 @@ jobs:
 
     - name: Create Release
       run: |
-        gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives."
+        gh release create v1.0.0 --title "Release v1.0.0" --notes "Please IGNORE the 'Source code (zip)' and 'Source code (tar.gz)' assets. Download 'Your App Name-Setup-1.0.0.exe' to get the latest version of the application."
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
 
