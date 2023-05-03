@@ -2,12 +2,7 @@ name: Build Electron app on main push
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'desktop/main.js'
-      - 'desktop/package.json'
-      - 'desktop/package-lock.json'
+    branches: [ "main" ]
 
 jobs:
   build:
