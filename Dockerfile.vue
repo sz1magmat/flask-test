@@ -1,32 +1,19 @@
-# Use the official Node.js image as a base
 FROM node:16
 
-# Set the working directory in the container
+# App directory
 WORKDIR /app
-
-# Copy package.json and package-lock.json to the working directory
 COPY frontend/package*.json ./
 
-# Install the required packages
+# Install and build
 RUN npm install
-
-# Copy the rest of the application files to the working directory
 COPY frontend/ ./
-
-# Build the Vue.js application
 RUN npm run build
 
-# Use an Nginx image to serve the built application
+# Web server
 FROM nginx:1.21
-
-# Copy the built application files to the Nginx container
 COPY --from=0 /app/dist /usr/share/nginx/html
-
-# Copy the Nginx configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose the port on which the application will run
+# Port, run command
 EXPOSE 80
-
-# Start the Nginx server
 CMD ["nginx", "-g", "daemon off;"]
