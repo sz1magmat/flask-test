@@ -10,6 +10,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Set Git config
+      run: |
+        git config --global user.email "sz1magmat@vasvari.org"
+        git config --global user.name "sz1magmat"
+
     - name: Check out repository
       uses: actions/checkout@v2
 
@@ -67,18 +72,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
 
-
-
-
     - name: Push Tag
       run: |
-        git config --global user.email "sz1magmat@vasvari.org"
-        git config --global user.name "sz1magmat"
         git tag v1.0.0 || echo "Tag already exists"
         git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/$GITHUB_REPOSITORY
         git push origin v1.0.0 || echo "Tag already pushed"
-
-
 
     - name: Create Release
       id: create_release
@@ -86,7 +84,7 @@ jobs:
         gh release create v1.0.0 --title "Release v1.0.0" --notes "Description of the release. Please download 'Your App Name-Setup-1.0.0.exe' instead of the source code archives."
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
-
+      
     - name: Fetch Release
       id: fetch_release
       run: |
@@ -100,8 +98,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
         upload_url: ${{ env.UPLOAD_URL }}
-        asset_path: ./desktop/dist/Your App Name-Setup-1.0.0.exe
-        asset_name: Your App Name-Setup-1.0.0.exe
+        asset_path: ./desktop/dist/Your.App.Name-Setup-1.0.0.exe
+        asset_name: Your.App.Name-Setup-1.0.0.exe
         asset_content_type: application/octet-stream
-
 
