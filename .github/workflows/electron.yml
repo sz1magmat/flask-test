@@ -67,8 +67,12 @@ jobs:
 
     - name: Push Tag
       run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Action"
         git tag v1.0.0 || echo "Tag already exists"
+        git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/$GITHUB_REPOSITORY
         git push origin v1.0.0 || echo "Tag already pushed"
+
 
     - name: Create Release
       id: create_release
