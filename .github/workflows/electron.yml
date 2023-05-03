@@ -22,10 +22,10 @@ jobs:
       run: npm ci
       working-directory: desktop # Update the working directory
 
-    - name: Build and package Electron app
+    - name: Build and package Electron app with debug information
       run: |
         npm install electron-packager -g
-        electron-packager . --platform=win32 --arch=x64 --asar --out=dist --overwrite
+        electron-packager . --platform=win32 --arch=x64 --asar --out=dist --overwrite --debug
       working-directory: desktop
       
     - name: List contents of working directory
