@@ -89,12 +89,15 @@ jobs:
         
     - name: Delete unwanted assets
       run: |
-        release_id=$(gh api repos/:owner/:repo/releases/tags/v1.0.0 --jq '.id')
-        asset_ids=$(gh api repos/:owner/:repo/releases/$release_id/assets --jq '[.[] | select(.name | endswith(".zip") or endswith(".tar.gz"))] | map(.id)')
-        for asset_id in ${asset_ids[@]}; do
-          echo "Deleting asset ID: $asset_id"
-          gh api repos/:owner/:repo/releases/assets/$asset_id -X DELETE
-        done
+        $release = gh api repos/:owner/:repo/releases/tags/v1.0.0 | ConvertFrom-Json
+        $assets = gh api repos/:owner/:repo/releases/$($release.id)/assets | ConvertFrom-Json
+        $filteredAssets = $assets | Where-Object { $_.name.EndsWith(".zip") -or $_.name.EndsWith(".tar.gz") }
+
+        foreach ($asset in $filteredAssets) {
+          Write-Host "Deleting asset ID:" $asset.id
+          gh api repos/:owner/:repo/releases/assets/$($asset.id) -X DELETE
+        }
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
+
 
