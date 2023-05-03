@@ -42,9 +42,6 @@ jobs:
         name: electron-app
         path: desktop/dist/*.exe # Update the artifact path
 
-    - name: List contents of dist directory
-      run: Get-ChildItem -Path desktop/dist
-
     - name: Install and authenticate with GitHub CLI
       run: |
         Invoke-WebRequest -Uri "https://github.com/cli/cli/releases/download/v2.28.0/gh_2.28.0_windows_amd64.zip" -OutFile "gh.zip"
@@ -54,10 +51,13 @@ jobs:
 
     - name: Delete existing release and tag if exist
       run: |
-        gh release delete v1.0.0 -d --yes || echo "No existing release found"
-        git push -d --verbose origin v1.0.0 || echo "No existing tag found"
+        gh release delete v1.0.0 --yes || echo "No existing release found"
+        git config --global user.email "your_email@example.com"
+        git config --global user.name "Your Name"
+        git push --delete origin v1.0.0 || echo "No existing tag found"
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
+
 
 
     - name: Create Release
