@@ -43,7 +43,7 @@ jobs:
         path: desktop/dist/*.exe # Update the artifact path
 
     - name: List contents of dist directory
-      run: Get-ChildItem -Path dist
+      run: Get-ChildItem -Path desktop/dist
       
     - name: Create Release
       id: create_release
