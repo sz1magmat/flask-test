@@ -99,3 +99,4 @@ jobs:
         asset_path: ./desktop/dist/AUMS-Desktop.exe
         asset_name: AUMS-Desktop.exe
         asset_content_type: application/x-msdownload
+
